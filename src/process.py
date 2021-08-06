@@ -1,4 +1,4 @@
-import os
+import os, random
 
 def process(words: list[str], createCSV = False):
 	connections = [[0 for i in range(len(words))] for i in range(len(words))]
@@ -58,7 +58,8 @@ def process(words: list[str], createCSV = False):
 
 
 def pick(connections: list[list[int]], picked: list[int]):
-	pick = None
+	size = 0
+	picks = []
 
 	if picked == []:
 		for i, start in enumerate(connections):
@@ -71,17 +72,25 @@ def pick(connections: list[list[int]], picked: list[int]):
 					continue
 				count += end
 
-			if count >= 1 and (pick == None or count < pick[2]):
-				pick = [i, end, count]
+			if count >= 1 and (picks == [] or count < size):
+				picks = [[i, end]]
+				size = count
 	else:
 		for i, end in enumerate(connections[picked[-1]]):
 			if i in picked:
 				continue
 
-			if end >= 1 and (pick == None or end > pick[1]):
-				pick = [i, end]
+			if end >= 1 and end >= size:
+				if end > size:
+					picks = [[i, end]]
+					size = end
+				else:
+					picks.append([i, end])
 
-	if pick != None:
+
+	if picks != []:
+		pick = random.choice(picks)
+
 		picked.append(pick[0])
 
 		return picked, pick[1]
