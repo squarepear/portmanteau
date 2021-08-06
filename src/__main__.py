@@ -11,7 +11,7 @@ from process import process
 
 def main():
 	try:
-		opts, args = getopt.getopt(sys.argv[1:], "hf:", [ "help", "file=" ])
+		opts, args = getopt.getopt(sys.argv[1:], "hlf:", [ "help", "log", "file=" ])
 	except getopt.GetoptError as err:
 		print(err)
 		usage()
@@ -19,11 +19,14 @@ def main():
 
 	filename = None
 	words = None
+	log = False
 
 	for o, a in opts:
 		if o in ("-h", "--help"):
 			usage()
 			sys.exit()
+		elif o in ("-l", "--log"):
+			log = True
 		elif o in ("-f", "--file"):
 			filename = a
 
@@ -38,7 +41,7 @@ def main():
 
 		file.close()
 
-	print(process(words))
+	print(process(words, log))
 
 
 def usage():
